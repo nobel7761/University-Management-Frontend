@@ -23,11 +23,13 @@ const LoginPage = () => {
     try {
       const response = await userLogin({ ...data }).unwrap(); //here unwrap() will helps you to get only the data. you don't need to go through any nested object
 
-      if (response?.data?.accessToken) {
+      console.log(response);
+
+      if (response?.accessToken) {
         push("/profile");
       }
 
-      storeUserInfo({ accessToken: response?.data?.accessToken });
+      storeUserInfo({ accessToken: response?.accessToken });
     } catch (error) {
       console.error(error);
     }
