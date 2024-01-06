@@ -8,6 +8,7 @@ import FormInput from "@/components/Forms/FormInput";
 import { SubmitHandler } from "react-hook-form";
 import { useUserLoginMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
 
 type FormValues = {
   id: string;
@@ -16,10 +17,15 @@ type FormValues = {
 
 const LoginPage = () => {
   const [userLogin] = useUserLoginMutation();
+  const { push } = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const response = await userLogin({ ...data }).unwrap(); //here unwrap() will helps you to get only the data. you don't need to go through any nested object
+
+      if (response?.data?.accessToken) {
+        push("/profile");
+      }
 
       storeUserInfo({ accessToken: response?.data?.accessToken });
     } catch (error) {
