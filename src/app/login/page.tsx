@@ -6,6 +6,8 @@ import Image from "next/image";
 import Form from "@/components/Forms/Form";
 import FormInput from "@/components/Forms/FormInput";
 import { SubmitHandler } from "react-hook-form";
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import { storeUserInfo } from "@/services/auth.service";
 
 type FormValues = {
   id: string;
@@ -13,11 +15,15 @@ type FormValues = {
 };
 
 const LoginPage = () => {
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const [userLogin] = useUserLoginMutation();
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      console.log(data);
+      const response = await userLogin({ ...data }).unwrap(); //here unwrap() will helps you to get only the data. you don't need to go through any nested object
+
+      storeUserInfo({ accessToken: response?.data?.accessToken });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
