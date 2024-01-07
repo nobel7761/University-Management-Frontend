@@ -2,8 +2,9 @@
 
 import UMBreadcrumb from "@/components/ui/UMBreadcrumb";
 import { getUserInfo } from "@/services/auth.service";
+import React from "react";
 
-const UserPage = () => {
+const CreateAdminPage = () => {
   const { role } = getUserInfo() as any;
   return (
     <div>
@@ -13,11 +14,15 @@ const UserPage = () => {
             label: `${role}`,
             link: `/${role}`,
           },
+          {
+            label: `admin`,
+            link: `/${role}/admin`,
+          },
         ]}
       />
-      <h1>UserPage</h1>
+      <h1>Create Admin</h1>
     </div>
   );
 };
 
-export default UserPage;
+export default CreateAdminPage;

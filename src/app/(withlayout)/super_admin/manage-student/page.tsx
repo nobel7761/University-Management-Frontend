@@ -1,5 +1,6 @@
 "use client";
 
+import ActionBar from "@/components/ui/ActionBar";
 import UMBreadcrumb from "@/components/ui/UMBreadcrumb";
 import { getUserInfo } from "@/services/auth.service";
 import { Button } from "antd";
@@ -17,10 +18,11 @@ const ManageStudentPage = () => {
           },
         ]}
       />
-      <h1>ManageStudentPage</h1>
-      <Link href="/super_admin/manage-student/create">
-        <Button>Create Student</Button>
-      </Link>
+      <ActionBar title="ManageStudentPage">
+        <Link href="/super_admin/manage-student/create">
+          <Button type="primary">Create Student</Button>
+        </Link>
+      </ActionBar>
     </div>
   );
 };
