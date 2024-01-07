@@ -131,17 +131,7 @@ export const sidebarItems = (role: string) => {
       key: `/${role}/user`,
       icon: <TableOutlined />,
     },
-    {
-      label: "Manage Permission",
-      key: "manage-permission",
-      icon: <AppstoreOutlined />,
-      children: [
-        {
-          label: <Link href={`/${role}/permission`}>View Permissions</Link>,
-          key: `/${role}/permission`,
-        },
-      ],
-    },
+
     {
       label: "Management",
       key: "management",

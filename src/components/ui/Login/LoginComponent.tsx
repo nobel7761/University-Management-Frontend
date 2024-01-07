@@ -23,8 +23,6 @@ const LoginComponent = () => {
     try {
       const response = await userLogin({ ...data }).unwrap(); //here unwrap() will helps you to get only the data. you don't need to go through any nested object
 
-      console.log(response);
-
       if (response?.accessToken) {
         push("/profile");
       }
