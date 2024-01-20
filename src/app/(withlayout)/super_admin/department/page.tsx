@@ -19,7 +19,7 @@ const DepartmentPage = () => {
         ]}
       />
 
-      <ActionBar title="DepartmentPage">
+      <ActionBar title="Department List">
         <Link href="/super_admin/department/create">
           <Button type="primary">Create</Button>
         </Link>

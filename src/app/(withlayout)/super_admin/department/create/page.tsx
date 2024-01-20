@@ -3,13 +3,20 @@
 import Form from "@/components/Forms/Form";
 import FormInput from "@/components/Forms/FormInput";
 import UMBreadcrumb from "@/components/ui/UMBreadcrumb";
-import { Button, Col, Row } from "antd";
+import { useAddDepartmentMutation } from "@/redux/api/departmentApi";
+import { Button, Col, Row, message } from "antd";
 
 const CreateDepartmentPage = () => {
+  const [addDepartment] = useAddDepartmentMutation();
+
   const onSubmit = async (data: any) => {
+    message.loading("Creating....");
     try {
       console.log(data);
+      await addDepartment(data);
+      message.success("Department Added Successfully");
     } catch (err: any) {
+      message.error(err.message);
       console.error(err.message);
     }
   };
@@ -30,7 +37,7 @@ const CreateDepartmentPage = () => {
           </Col>
         </Row>
         <Button type="primary" htmlType="submit">
-          add
+          Create
         </Button>
       </Form>
     </div>
