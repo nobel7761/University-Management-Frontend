@@ -3,18 +3,21 @@
 import ActionBar from "@/components/ui/ActionBar";
 import UMBreadcrumb from "@/components/ui/UMBreadcrumb";
 import UMTable from "@/components/ui/UMTable";
-import { useDepartmentsQuery } from "@/redux/api/departmentApi";
+import {
+  useDeleteDepartmentMutation,
+  useDepartmentsQuery,
+} from "@/redux/api/departmentApi";
 import { getUserInfo } from "@/services/auth.service";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import Link from "next/link";
 import {
   DeleteOutlined,
   EditOutlined,
-  EyeOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
 import { useDebounced } from "@/redux/hooks";
+import dayjs from "dayjs";
 
 const DepartmentPage = () => {
   const { role } = getUserInfo() as any;
@@ -54,6 +57,19 @@ const DepartmentPage = () => {
   const departments = data?.departments;
   const meta = data?.meta;
 
+  const [deleteDepartment] = useDeleteDepartmentMutation();
+
+  const deleteHandler = async (id: string) => {
+    message.loading("Deleting....");
+
+    try {
+      await deleteDepartment(id);
+      message.success("Department Deleted Successfully");
+    } catch (err: any) {
+      message.error(err.message);
+    }
+  };
+
   const columns = [
     {
       title: "Title",
@@ -64,6 +80,9 @@ const DepartmentPage = () => {
       title: "CreatedAt",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: function (data: any) {
+        return data && dayjs(data).format("MMM D, YYYY hh:mm A");
+      },
       // sorter: (a: any, b: any) => a.age - b.age,
       sorter: true,
     },
@@ -72,18 +91,14 @@ const DepartmentPage = () => {
       render: function (data: any) {
         return (
           <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-            <Button type="primary" onClick={() => console.log(data)}>
-              <EyeOutlined style={{ fontSize: "20px" }} />
-            </Button>
-            <Button type="primary">
-              <EditOutlined
-                onClick={() => console.log(data)}
-                style={{ fontSize: "18px" }}
-              />
-            </Button>
+            <Link href={`/super_admin/department/edit/${data?.id}`}>
+              <Button type="primary">
+                <EditOutlined style={{ fontSize: "18px" }} />
+              </Button>
+            </Link>
             <Button type="primary" danger>
               <DeleteOutlined
-                onClick={() => console.log(data)}
+                onClick={() => deleteHandler(data?.id)}
                 style={{ fontSize: "20px" }}
               />
             </Button>
