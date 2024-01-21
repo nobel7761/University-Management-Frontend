@@ -39,7 +39,9 @@ const EditDepartmentPage = ({ params }: IDProps) => {
     title: data?.title || "",
   };
 
-  return (
+  return isLoading ? (
+    <p>Loading</p>
+  ) : (
     <div>
       <UMBreadcrumb
         items={[

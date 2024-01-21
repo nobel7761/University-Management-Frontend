@@ -7,19 +7,29 @@ import FormSelect from "@/components/Forms/FormSelect";
 import FormTextArea from "@/components/Forms/FormTextArea";
 import UMBreadcrumb from "@/components/ui/UMBreadcrumb";
 import UploadImage from "@/components/ui/UploadImage";
-import {
-  bloodGroupOptions,
-  departmentOptions,
-  genderOptions,
-} from "@/constants/global";
+import { bloodGroupOptions, genderOptions } from "@/constants/global";
+import { useDepartmentsQuery } from "@/redux/api/departmentApi";
 import { adminSchema } from "@/schemas/admin";
 import { getUserInfo } from "@/services/auth.service";
+import { IDepartment } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Col, Row } from "antd";
 import React from "react";
 
 const CreateAdminPage = () => {
   const { role } = getUserInfo() as any;
+
+  const { data, isLoading } = useDepartmentsQuery({ limit: 100, page: 1 });
+  //@ts-ignore
+  const departments: IDepartment[] = data?.departments;
+  const departmentOptions =
+    departments &&
+    departments.map((department) => {
+      return {
+        label: department?.title,
+        value: department?.id,
+      };
+    });
 
   const onSubmit = async (data: any) => {
     try {
@@ -143,7 +153,7 @@ const CreateAdminPage = () => {
                 span={8}
                 style={{ marginBottom: "10px" }}
               >
-                <UploadImage />
+                <UploadImage name="file" />
               </Col>
             </Row>
           </div>
